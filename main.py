@@ -1,7 +1,7 @@
 import datetime
 import discord
 from discord.ext import commands
-from random import randint
+import random 
 import requests
 
 token_FILE = open('token.txt', 'r')
@@ -19,7 +19,7 @@ async def ping(ctx):
 async def moeda(ctx):
     """Joga uma moeda e informa se foi cara ou coroa (completamente aleatorio)"""
     opc = ['Cara', 'Coroa']
-    await ctx.send(opc[randint(0,len(opc)-1)])
+    await ctx.send(random.choice(opc))
 
 @bot.command()
 async def aleatorio(ctx, arg1, arg2):
@@ -48,10 +48,11 @@ async def say(ctx,my,name):
 @bot.command()
 async def time(ctx):
     """
-    Informa a hora atual
+    Informa a data e hora atual
     """
-    now = datetime.datetime.now()
-    await ctx.send(f'```Data:{now.day}/{now.month}/{now.year}\nHora:{now.hour}:{now.minute}\n```')
+    now = datetime.datetime.now().strftime("Data: %d/%m/%Y Hora: %H:%M")
+    print(now)
+    await ctx.send(f'```{now}```')
 
 @bot.command()
 async def python(ctx, *args):
@@ -114,20 +115,19 @@ async def doc(ctx, arg):
     """
     retorna o link de documentação do nome da linguagem passada
     """
-    if arg.lower() == 'python':
-        await ctx.send('Ja disse que te amo hoje?\nhttps://www.python.org/doc/versions/\nUsa e abusa da melhor linguagem do universo')
-    elif arg.lower() == 'java':
-        await ctx.send('JOGA ESSA PORRA FORA E ENTRA AQUI https://www.python.org/doc/versions/')
-    elif arg.lower() == 'c':
-        await ctx.send('Alguem ta chorando pra apc 2 aqui hein?\nhttps://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html')
-    elif arg.lower() == 'javascript' or arg.lower() == 'js':
-        await ctx.send('La vem o JSboy, vai me dizer que tem um newbettle e sai com rapazes também?\ntoma essa droga logo: https://devdocs.io/javascript/')
-    elif arg.lower() == 'php':
-        await ctx.send('Mano para de usar droga na humilda, vou te passar só por que quem programa em PHP tem baixa capacidade cognitiva\nhttps://www.php.net/manual/pt_BR/')
-    elif arg.lower() == 'brainfuck':
-        await ctx.send('Na brisa na noia http://cocoadocs.org/docsets/Brainfuck/0.0.1/')
-    else:
-        await ctx.send('Essa linguagem ai eu não assumo o BO de procurar não\nRecomendo essa daqui: https://www.python.org/doc/versions/')
+    doc_dict = {
+        'python':'Ja disse que te amo hoje?\nhttps://www.python.org/doc/versions/\nUsa e abusa da melhor linguagem do universo',
+        'java':'JOGA ESSA PORRA FORA E ENTRA AQUI https://www.python.org/doc/versions/',
+        'c':'Alguem ta chorando pra apc 2 aqui hein?\nhttps://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html',
+        'javascript':'La vem o JSboy, vai me dizer que tem um newbettle e sai com rapazes também?\ntoma essa droga logo: https://devdocs.io/javascript/',
+        'js':'La vem o JSboy, vai me dizer que tem um newbettle e sai com rapazes também?\ntoma essa droga logo: https://devdocs.io/javascript/',
+        'php':'Mano para de usar droga na humilda, vou te passar só por que quem programa em PHP tem baixa capacidade cognitiva\nhttps://www.php.net/manual/pt_BR/',
+        'brainfuck':'Na brisa na noia http://cocoadocs.org/docsets/Brainfuck/0.0.1/',
+    }
+
+    value = doc_dict.get(arg.lower(), 'Essa linguagem ai eu não assumo o BO de procurar não\nRecomendo essa daqui: https://www.python.org/doc/versions/')
+
+    await ctx.send(value)
 
 
 
